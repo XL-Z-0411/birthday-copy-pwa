@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="生日文案">
+  <meta name="theme-color" content="#FF6B9D">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./static/icons/icon-180.png">
+  <link rel="icon" type="image/png" href="./static/icons/icon-192.png">
+  <title>每日生日文案</title>
+  <link rel="stylesheet" href="./static/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 顶部头部 -->
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">每日生日文案</h1>
+        <p class="app-date" id="todayDate">加载中...</p>
+      </div>
+    </header>
+
+    <!-- 分类标签 -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="forOthers">
+        <span class="tab-icon icon-gift"></span>
+        <span class="tab-text">祝他人生日</span>
+        <span class="tab-count" id="countOthers">20</span>
+      </button>
+      <button class="tab-btn" data-tab="forSelf">
+        <span class="tab-icon icon-cake"></span>
+        <span class="tab-text">自己生日</span>
+        <span class="tab-count" id="countSelf">20</span>
+      </button>
+    </nav>
+
+    <!-- 加载状态 -->
+    <div class="loading" id="loading">
+      <div class="loading-cake">生</div>
+      <p>正在为你整理今日文案...</p>
+    </div>
+
+    <!-- 文案列表 -->
+    <main class="content" id="content" style="display:none;">
+      <div class="copy-list" id="copyList"></div>
+    </main>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-page="home">
+        <span class="nav-icon icon-home"></span>
+        <span class="nav-label">今日</span>
+      </button>
+      <button class="nav-btn" data-page="favorites">
+        <span class="nav-icon icon-star"></span>
+        <span class="nav-label">收藏</span>
+        <span class="nav-badge" id="favBadge" style="display:none;">0</span>
+      </button>
+      <button class="nav-btn" data-page="history">
+        <span class="nav-icon icon-book"></span>
+        <span class="nav-label">往期</span>
+      </button>
+      <button class="nav-btn" data-page="about">
+        <span class="nav-icon icon-info"></span>
+        <span class="nav-label">关于</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- 收藏页面 -->
+  <div class="page" id="page-favorites" style="display:none;">
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">⭐ 我的收藏</h1>
+      </div>
+    </header>
+    <main class="content">
+      <div class="copy-list" id="favList">
+        <div class="empty-state">
+          <div class="empty-icon">⭐</div>
+          <p>还没有收藏的文案</p>
+          <p class="empty-hint">点击文案右上角的星标即可收藏</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 往期页面 -->
+  <div class="page" id="page-history" style="display:none;">
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">📚 往期文案</h1>
+      </div>
+    </header>
+    <main class="content">
+      <div class="history-list" id="historyList">
+        <div class="empty-state">
+          <div class="empty-icon">📚</div>
+          <p>往期文案将在这里展示</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 关于页面 -->
+  <div class="page" id="page-about" style="display:none;">
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title">ℹ️ 关于</h1>
+      </div>
+    </header>
+    <main class="content about-content">
+      <div class="about-card">
+        <div class="about-logo icon-cake-lg"></div>
+        <h2>每日生日文案</h2>
+        <p class="about-version">版本 1.0.0</p>
+        <p class="about-desc">每天为你整理热门生日文案，来自小红书、抖音等平台，经 AI 去重分类润色。</p>
+        <div class="about-features">
+        <div class="feature-item">
+          <span class="feature-icon icon-gift"></span>
+          <span>祝他人生日文案</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon icon-cake"></span>
+          <span>自己生日发圈文案</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon icon-star"></span>
+          <span>收藏喜欢的文案</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon icon-copy"></span>
+          <span>一键复制分享</span>
+        </div>
+        </div>
+        <p class="about-tip">提示：用 Safari 打开，添加到主屏幕后可像 App 一样使用</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast 提示 -->
+  <div class="toast" id="toast"></div>
+
+  <script src="./static/app.js"></script>
+</body>
+</html>

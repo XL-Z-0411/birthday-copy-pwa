@@ -1,0 +1,24 @@
+{
+  "name": "每日生日文案",
+  "short_name": "生日文案",
+  "description": "每天为你整理热门生日文案，祝他人生日快乐、自己生日发圈必备",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF5E6",
+  "theme_color": "#FF6B9D",
+  "icons": [
+    {
+      "src": "./static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

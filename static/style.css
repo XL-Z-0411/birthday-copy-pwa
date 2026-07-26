@@ -36,7 +36,7 @@ html, body {
 
 #app {
   min-height: 100vh;
-  padding-bottom: calc(70px + var(--safe-bottom));
+  padding-left: 64px;
 }
 
 /* ===== 头部 ===== */
@@ -53,6 +53,40 @@ html, body {
 .header-content {
   max-width: 600px;
   margin: 0 auto;
+}
+
+/* 带返回按钮的头部 */
+.header-with-back {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back-btn {
+  background: rgba(255,255,255,0.25);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 2px 0;
+  transition: all 0.2s;
+}
+
+.back-btn:active {
+  transform: scale(0.9);
+  background: rgba(255,255,255,0.4);
+}
+
+.header-with-back .app-title {
+  flex: 1;
 }
 
 .app-title {
@@ -356,36 +390,42 @@ html, body {
   color: white;
 }
 
-/* ===== 底部导航 ===== */
+/* ===== 左侧导航 ===== */
 .bottom-nav {
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
-  right: 0;
+  bottom: 0;
+  width: 64px;
   background: white;
   display: flex;
-  padding: 8px 0 calc(8px + var(--safe-bottom));
-  box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 12px) 0 var(--safe-bottom);
+  box-shadow: 2px 0 12px rgba(0,0,0,0.06);
   z-index: 1000;
 }
 
 .nav-btn {
-  flex: 1;
   border: none;
   background: none;
   color: var(--text-light);
-  padding: 6px 4px;
+  padding: 14px 4px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   position: relative;
   transition: color 0.2s;
+  flex: 1;
+  justify-content: center;
+  border-right: 3px solid transparent;
 }
 
 .nav-btn.active {
   color: var(--primary);
+  background: #FFF0F5;
+  border-right-color: var(--primary);
 }
 
 .nav-icon {
@@ -393,15 +433,14 @@ html, body {
 }
 
 .nav-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
 }
 
 .nav-badge {
   position: absolute;
-  top: 0;
-  right: 50%;
-  margin-right: -20px;
+  top: 8px;
+  right: 8px;
   background: var(--primary);
   color: white;
   font-size: 10px;
@@ -539,6 +578,13 @@ html, body {
   margin-bottom: 4px;
 }
 
+.history-count {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-light);
+  margin-left: 8px;
+}
+
 .history-preview {
   font-size: 13px;
   color: var(--text-light);
@@ -574,7 +620,7 @@ html, body {
 /* ===== 页面切换 ===== */
 .page {
   min-height: 100vh;
-  padding-bottom: calc(70px + var(--safe-bottom));
+  padding-left: 64px;
 }
 
 .page .content {

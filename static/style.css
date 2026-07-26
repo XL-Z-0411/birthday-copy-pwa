@@ -8,16 +8,16 @@
 }
 
 :root {
-  --primary: #FF6B9D;
-  --primary-light: #FFB6C1;
-  --primary-dark: #E91E63;
-  --bg: #FFF5E6;
+  --primary: #1A1A1A;
+  --primary-light: #666666;
+  --primary-dark: #000000;
+  --bg: #F5F5F5;
   --card-bg: #FFFFFF;
-  --text: #2C2C2C;
-  --text-light: #888;
-  --border: #FFE0E9;
-  --shadow: 0 2px 12px rgba(255, 107, 157, 0.1);
-  --shadow-hover: 0 4px 20px rgba(255, 107, 157, 0.2);
+  --text: #1A1A1A;
+  --text-light: #999999;
+  --border: #E5E5E5;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.15);
   --radius: 16px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -116,7 +116,7 @@ html, body {
 .tab-btn {
   flex: 1;
   border: none;
-  background: #FFF0F5;
+  background: #F5F5F5;
   color: var(--text-light);
   padding: 12px 8px;
   border-radius: 12px;
@@ -239,7 +239,7 @@ html, body {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: #FFF0F5;
+  background: #F5F5F5;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -325,7 +325,7 @@ html, body {
 
 .copy-tag {
   display: inline-block;
-  background: #FFF0F5;
+  background: #F5F5F5;
   color: var(--primary);
   font-size: 11px;
   padding: 3px 10px;
@@ -334,8 +334,8 @@ html, body {
 }
 
 .copy-tag.for-self {
-  background: #FFF8E1;
-  color: #FF9800;
+  background: #F5F5F5;
+  color: #666666;
 }
 
 .copy-number {
@@ -362,7 +362,7 @@ html, body {
 .action-btn {
   flex: 1;
   border: none;
-  background: #FFF0F5;
+  background: #F5F5F5;
   color: var(--primary);
   padding: 8px;
   border-radius: 10px;
@@ -381,7 +381,7 @@ html, body {
 }
 
 .action-btn.fav-btn.active {
-  background: #FFD700;
+  background: #1A1A1A;
   color: white;
 }
 
@@ -424,7 +424,7 @@ html, body {
 
 .nav-btn.active {
   color: var(--primary);
-  background: #FFF0F5;
+  background: #F5F5F5;
   border-right-color: var(--primary);
 }
 
@@ -469,7 +469,7 @@ html, body {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #FFF0F5;
+  background: #F5F5F5;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -529,7 +529,7 @@ html, body {
 }
 
 .feature-item {
-  background: #FFF5E6;
+  background: #F0F0F0;
   padding: 12px 8px;
   border-radius: 12px;
   font-size: 13px;
@@ -546,7 +546,7 @@ html, body {
 .about-tip {
   font-size: 13px;
   color: var(--primary);
-  background: #FFF0F5;
+  background: #F5F5F5;
   padding: 10px;
   border-radius: 10px;
 }

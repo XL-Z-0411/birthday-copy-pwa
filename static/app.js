@@ -43,6 +43,13 @@ const App = {
         this.switchPage(page);
       });
     });
+
+    // 返回按钮
+    document.querySelectorAll('.back-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.switchPage('home');
+      });
+    });
   },
 
   // ===== 加载今日数据 =====
@@ -51,16 +58,22 @@ const App = {
       const today = this.getTodayKey();
       let data = null;
 
-      // 检查本地缓存
+      // 检查今天是否已缓存
       const cached = localStorage.getItem(`data_${today}`);
       if (cached) {
         data = JSON.parse(cached);
       }
 
       if (!data) {
-        // 直接从静态 JSON 加载，前端完成日期轮换
+        // 今天第一次打开：从文案库选今日文案
         data = await this.loadBuiltinData();
+        // 标记日期并缓存
+        data.date = today;
+        data.isNew = true;
         localStorage.setItem(`data_${today}`, JSON.stringify(data));
+        
+        // 累积到总库（往期文案）
+        this.addToAccumulated(data);
       }
 
       this.todayData = data;
@@ -74,6 +87,21 @@ const App = {
       this.updateCounts();
       this.renderCopyList();
       this.hideLoading();
+    }
+  },
+
+  // ===== 累积到往期文案库 =====
+  addToAccumulated(dailyData) {
+    let acc = JSON.parse(localStorage.getItem('accumulated') || '{"records":[]}');
+    // 避免重复添加同一天
+    const exists = acc.records.find(r => r.date === dailyData.date);
+    if (!exists) {
+      acc.records.push({
+        date: dailyData.date,
+        forOthers: dailyData.forOthers || [],
+        forSelf: dailyData.forSelf || []
+      });
+      localStorage.setItem('accumulated', JSON.stringify(acc));
     }
   },
 
@@ -339,16 +367,23 @@ const App = {
   // ===== 往期文案 =====
   renderHistory() {
     const container = document.getElementById('historyList');
-    const histories = [];
     
-    for (let i = 0; i < localStorage.length; i++) {
-      const k = localStorage.key(i);
-      if (k && k.startsWith('data_')) {
-        try {
-          const data = JSON.parse(localStorage.getItem(k));
-          const date = k.replace('data_', '');
-          histories.push({ date, data });
-        } catch (e) {}
+    // 优先从累积库读取
+    let histories = [];
+    const acc = JSON.parse(localStorage.getItem('accumulated') || '{"records":[]}');
+    if (acc.records && acc.records.length > 0) {
+      histories = acc.records.map(r => ({ date: r.date, data: r }));
+    } else {
+      // 兼容旧版：从 data_ 缓存读取
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('data_')) {
+          try {
+            const data = JSON.parse(localStorage.getItem(k));
+            const date = k.replace('data_', '');
+            histories.push({ date, data });
+          } catch (e) {}
+        }
       }
     }
 
@@ -359,18 +394,21 @@ const App = {
         <div class="empty-state">
           <div class="empty-icon">往</div>
           <p>往期文案将在这里展示</p>
-          <p class="empty-hint">每天打开 App 后会自动缓存当日文案</p>
+          <p class="empty-hint">每天打开 App 后会自动保存当日文案</p>
         </div>
       `;
       return;
     }
 
     container.innerHTML = histories.map(h => {
-      const allTexts = [...(h.data.forOthers || []), ...(h.data.forSelf || [])];
-      const preview = allTexts[0] ? (typeof allTexts[0] === 'string' ? allTexts[0] : allTexts[0].text) : '';
+      const others = h.data.forOthers || [];
+      const selfs = h.data.forSelf || [];
+      const preview = others[0] ? (typeof others[0] === 'string' ? others[0] : others[0].text) : 
+                       (selfs[0] ? (typeof selfs[0] === 'string' ? selfs[0] : selfs[0].text) : '');
+      const total = others.length + selfs.length;
       return `
         <div class="history-item" data-date="${h.date}">
-          <div class="history-date">${h.date}</div>
+          <div class="history-date">${h.date} <span class="history-count">共 ${total} 条</span></div>
           <div class="history-preview">${this.escapeHtml(preview)}</div>
         </div>
       `;
@@ -379,7 +417,15 @@ const App = {
     container.querySelectorAll('.history-item').forEach(item => {
       item.addEventListener('click', () => {
         const date = item.dataset.date;
-        const data = JSON.parse(localStorage.getItem(`data_${date}`));
+        // 先从累积库找
+        const acc = JSON.parse(localStorage.getItem('accumulated') || '{"records":[]}');
+        const record = acc.records.find(r => r.date === date);
+        let data;
+        if (record) {
+          data = record;
+        } else {
+          data = JSON.parse(localStorage.getItem(`data_${date}`));
+        }
         if (data) {
           this.todayData = data;
           this.updateCounts();

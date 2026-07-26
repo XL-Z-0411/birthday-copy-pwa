@@ -5,54 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="生日文案">
+  <meta name="apple-mobile-web-app-title" content="文案工作台">
   <meta name="theme-color" content="#1A1A1A">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./static/icons/icon-180.png">
   <link rel="icon" type="image/png" href="./static/icons/icon-192.png">
-  <title>每日生日文案</title>
+  <title>文案工作台</title>
   <link rel="stylesheet" href="./static/style.css">
 </head>
 <body>
   <div id="app">
-    <!-- 顶部头部 -->
-    <header class="app-header">
-      <div class="header-content">
-        <h1 class="app-title">每日生日文案</h1>
-        <p class="app-date" id="todayDate">加载中...</p>
-      </div>
-    </header>
+    <!-- 工作台首页 -->
+    <div id="page-workbench" class="page-active">
+      <header class="app-header">
+        <div class="header-content">
+          <h1 class="app-title">文案工作台</h1>
+          <p class="app-date" id="todayDate">加载中...</p>
+        </div>
+      </header>
 
-    <!-- 分类标签 -->
-    <nav class="tab-bar">
-      <button class="tab-btn active" data-tab="forOthers">
-        <span class="tab-icon icon-gift"></span>
-        <span class="tab-text">祝他人生日</span>
-        <span class="tab-count" id="countOthers">20</span>
-      </button>
-      <button class="tab-btn" data-tab="forSelf">
-        <span class="tab-icon icon-cake"></span>
-        <span class="tab-text">自己生日</span>
-        <span class="tab-count" id="countSelf">20</span>
-      </button>
-    </nav>
-
-    <!-- 加载状态 -->
-    <div class="loading" id="loading">
-      <div class="loading-cake">生</div>
-      <p>正在为你整理今日文案...</p>
+      <main class="content workbench-content">
+        <p class="section-title">我的文案分组</p>
+        <div class="card-grid" id="cardGrid">
+          <!-- 生日文案卡片 -->
+          <div class="module-card" data-module="birthday">
+            <div class="module-icon icon-cake-lg"></div>
+            <div class="module-info">
+              <h3 class="module-name">生日文案</h3>
+              <p class="module-desc">祝他人 + 自己生日</p>
+              <p class="module-count">40 条今日</p>
+            </div>
+          </div>
+        </div>
+        
+        <p class="section-hint">更多分组即将上线</p>
+      </main>
     </div>
 
-    <!-- 文案列表 -->
-    <main class="content" id="content" style="display:none;">
-      <div class="copy-list" id="copyList"></div>
-    </main>
+    <!-- 文案详情页（生日文案） -->
+    <div id="page-birthday" class="page-hidden">
+      <header class="app-header">
+        <div class="header-content header-with-back">
+          <button class="back-btn" data-back="workbench">‹</button>
+          <h1 class="app-title">生日文案</h1>
+        </div>
+      </header>
 
-    <!-- 底部导航 -->
+      <nav class="tab-bar">
+        <button class="tab-btn active" data-tab="forOthers">
+          <span class="tab-icon icon-gift"></span>
+          <span class="tab-text">祝他人生日</span>
+          <span class="tab-count" id="countOthers">20</span>
+        </button>
+        <button class="tab-btn" data-tab="forSelf">
+          <span class="tab-icon icon-cake"></span>
+          <span class="tab-text">自己生日</span>
+          <span class="tab-count" id="countSelf">20</span>
+        </button>
+      </nav>
+
+      <div class="loading" id="loading">
+        <div class="loading-cake">生</div>
+        <p>正在为你整理今日文案...</p>
+      </div>
+
+      <main class="content" id="content" style="display:none;">
+        <div class="copy-list" id="copyList"></div>
+      </main>
+    </div>
+
+    <!-- 左侧导航 -->
     <nav class="bottom-nav">
-      <button class="nav-btn active" data-page="home">
+      <button class="nav-btn active" data-page="workbench">
         <span class="nav-icon icon-home"></span>
-        <span class="nav-label">今日</span>
+        <span class="nav-label">工作台</span>
       </button>
       <button class="nav-btn" data-page="favorites">
         <span class="nav-icon icon-star"></span>
@@ -74,18 +100,12 @@
   <div class="page" id="page-favorites" style="display:none;">
     <header class="app-header">
       <div class="header-content header-with-back">
-        <button class="back-btn" data-back="home">‹</button>
+        <button class="back-btn" data-back="workbench">‹</button>
         <h1 class="app-title">我的收藏</h1>
       </div>
     </header>
     <main class="content">
-      <div class="copy-list" id="favList">
-        <div class="empty-state">
-          <div class="empty-icon">⭐</div>
-          <p>还没有收藏的文案</p>
-          <p class="empty-hint">点击文案右上角的星标即可收藏</p>
-        </div>
-      </div>
+      <div class="copy-list" id="favList"></div>
     </main>
   </div>
 
@@ -93,17 +113,12 @@
   <div class="page" id="page-history" style="display:none;">
     <header class="app-header">
       <div class="header-content header-with-back">
-        <button class="back-btn" data-back="home">‹</button>
+        <button class="back-btn" data-back="workbench">‹</button>
         <h1 class="app-title">往期文案</h1>
       </div>
     </header>
     <main class="content">
-      <div class="history-list" id="historyList">
-        <div class="empty-state">
-          <div class="empty-icon">📚</div>
-          <p>往期文案将在这里展示</p>
-        </div>
-      </div>
+      <div class="history-list" id="historyList"></div>
     </main>
   </div>
 
@@ -111,33 +126,21 @@
   <div class="page" id="page-about" style="display:none;">
     <header class="app-header">
       <div class="header-content header-with-back">
-        <button class="back-btn" data-back="home">‹</button>
+        <button class="back-btn" data-back="workbench">‹</button>
         <h1 class="app-title">关于</h1>
       </div>
     </header>
     <main class="content about-content">
       <div class="about-card">
         <div class="about-logo icon-cake-lg"></div>
-        <h2>每日生日文案</h2>
-        <p class="about-version">版本 1.0.0</p>
-        <p class="about-desc">每天为你整理热门生日文案，来自小红书、抖音等平台，经 AI 去重分类润色。</p>
+        <h2>文案工作台</h2>
+        <p class="about-version">版本 2.0.0</p>
+        <p class="about-desc">个人文案工作台，汇集各类精选文案。当前已上线：生日文案。更多分组持续更新中。</p>
         <div class="about-features">
-        <div class="feature-item">
-          <span class="feature-icon icon-gift"></span>
-          <span>祝他人生日文案</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon icon-cake"></span>
-          <span>自己生日发圈文案</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon icon-star"></span>
-          <span>收藏喜欢的文案</span>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon icon-copy"></span>
-          <span>一键复制分享</span>
-        </div>
+          <div class="feature-item"><span class="feature-icon icon-gift"></span><span>祝他人生日文案</span></div>
+          <div class="feature-item"><span class="feature-icon icon-cake"></span><span>自己生日发圈文案</span></div>
+          <div class="feature-item"><span class="feature-icon icon-star"></span><span>收藏喜欢的文案</span></div>
+          <div class="feature-item"><span class="feature-icon icon-copy"></span><span>一键复制分享</span></div>
         </div>
         <p class="about-tip">提示：用 Safari 打开，添加到主屏幕后可像 App 一样使用</p>
       </div>

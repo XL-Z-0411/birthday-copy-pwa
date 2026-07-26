@@ -2,7 +2,7 @@
 
 const App = {
   currentTab: 'forOthers',
-  currentPage: 'home',
+  currentPage: 'workbench',
   todayData: { forOthers: [], forSelf: [] },
   favorites: [],
   history: {},
@@ -21,7 +21,8 @@ const App = {
     const now = new Date();
     const weeks = ['日', '一', '二', '三', '四', '五', '六'];
     const dateStr = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 星期${weeks[now.getDay()]}`;
-    document.getElementById('todayDate').textContent = dateStr;
+    const el = document.getElementById('todayDate');
+    if (el) el.textContent = dateStr;
   },
 
   // ===== 绑定事件 =====
@@ -36,7 +37,7 @@ const App = {
       });
     });
 
-    // 底部导航
+    // 左侧导航
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const page = btn.dataset.page;
@@ -44,12 +45,32 @@ const App = {
       });
     });
 
-    // 返回按钮
+    // 返回按钮 → 回工作台
     document.querySelectorAll('.back-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        this.switchPage('home');
+        this.switchPage('workbench');
       });
     });
+
+    // 工作台卡片点击 → 进入生日文案
+    document.querySelectorAll('.module-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const mod = card.dataset.module;
+        if (mod === 'birthday') {
+          this.showBirthdayPage();
+        }
+      });
+    });
+  },
+
+  // ===== 显示生日文案详情页 =====
+  showBirthdayPage() {
+    document.getElementById('page-workbench').className = 'page-hidden';
+    document.getElementById('page-birthday').className = 'page-active';
+    // 更新左侧导航高亮（保持工作台高亮）
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.nav-btn[data-page="workbench"]').classList.add('active');
+    window.scrollTo(0, 0);
   },
 
   // ===== 加载今日数据 =====
@@ -429,7 +450,9 @@ const App = {
         if (data) {
           this.todayData = data;
           this.updateCounts();
-          this.switchPage('home');
+          // 先切到工作台，再进生日文案详情页
+          this.switchPage('workbench');
+          this.showBirthdayPage();
           this.renderCopyList();
           this.showToast(`已切换到 ${date} 的文案`);
         }
@@ -446,8 +469,17 @@ const App = {
     document.getElementById('app').style.display = 'none';
     document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
     
-    if (page === 'home') {
+    // 隐藏 app 内的子页面
+    const wb = document.getElementById('page-workbench');
+    const bd = document.getElementById('page-birthday');
+    if (wb) wb.className = 'page-hidden';
+    if (bd) bd.className = 'page-hidden';
+    
+    if (page === 'workbench') {
+      // 显示工作台首页
       document.getElementById('app').style.display = 'block';
+      if (wb) wb.className = 'page-active';
+      if (bd) bd.className = 'page-hidden';
     } else {
       document.getElementById(`page-${page}`).style.display = 'block';
       if (page === 'favorites') this.renderFavorites();
